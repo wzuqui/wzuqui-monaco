@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Editor, { Monaco } from '@monaco-editor/react';
 import { emmetHTML, emmetCSS, emmetJSX } from 'emmet-monaco-es';
 
 import styles from './App.module.css';
+import { convertSCSS } from './convert-scss';
 
 type Tabs = 'html' | 'typescript' | 'scss';
 
@@ -30,51 +31,49 @@ export function App() {
   const [html, setHTML] = useState(getURLState().html);
   const [scss, setSCSS] = useState(getURLState().scss);
 
-  function handleHTMLEditorWillMount(monaco: Monaco) {
-    emmetHTML(monaco);
+  const [HTMLEditorMount, setHTMLEditorMount] = useState(false);
+  const [SCSSEditorWillMount, setSCSSEditorWillMount] = useState(false);
+
+  function appendStyle(text: string) {
+    try {
+      convertSCSS(text, (element: HTMLStyleElement) => {
+        if (iframeRef.current) {
+          if (iframeRef.current.contentWindow) {
+            iframeRef.current.contentWindow.document.head.appendChild(element);
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
-  function handleTypeScriptEditorWillMount(monaco: Monaco) {
-    emmetJSX(monaco);
-  }
-  function handleSCSSEditorWillMount(monaco: Monaco) {
-    emmetCSS(monaco);
-  }
-  function handleHTMLChange(value?: string) {
-    setHTML(value ?? '');
+  function appendHTML(text: string) {
     if (iframeRef.current) {
       if (iframeRef.current.contentWindow) {
         iframeRef.current.contentWindow.document.open();
-        iframeRef.current.contentWindow.document.write(value ?? '');
+        iframeRef.current.contentWindow.document.write(text ?? '');
         iframeRef.current.contentWindow.document.close();
       }
     }
   }
+  function handleHTMLEditorWillMount(monaco: Monaco) {
+    emmetHTML(monaco);
+    setHTMLEditorMount(true);
+  }
+  function handleSCSSEditorWillMount(monaco: Monaco) {
+    emmetCSS(monaco);
+    setSCSSEditorWillMount(true);
+  }
+  function handleHTMLChange(value?: string) {
+    setHTML(value ?? '');
+    appendHTML(value ?? '');
+  }
   function handleSCSSChange(value?: string) {
     if (value) {
       setSCSS(value);
-      try {
-        (window as any).Sass.compile(
-          value,
-          null,
-          (result: { text: string }) => {
-            const cssLink = document.createElement('style');
-            cssLink.textContent = result.text;
-
-            if (iframeRef.current) {
-              if (iframeRef.current.contentWindow) {
-                iframeRef.current.contentWindow.document.head.appendChild(
-                  cssLink
-                );
-              }
-            }
-          }
-        );
-      } catch (error) {
-        console.log(error);
-      }
+      appendStyle(value);
     }
   }
-
   function handleSalvar() {
     window.location.hash =
       '#' +
@@ -86,14 +85,21 @@ export function App() {
       );
   }
 
+  useEffect(
+    function () {
+      appendHTML(html);
+      appendStyle(scss);
+    },
+    [HTMLEditorMount, SCSSEditorWillMount]
+  );
+
   return (
     <div className={styles.app}>
       <div className={styles.editors}>
         <div className={styles.editorTabs}>
           <button onClick={() => setTabActive('html')}>HTML</button>
-          {/* <button onClick={() => setTabActive('typescript')}>TypeScript</button> */}
           <button onClick={() => setTabActive('scss')}>SCSS</button>
-
+          <div>|</div>
           <button onClick={() => handleSalvar()}>Salvar</button>
         </div>
         <div className={styles.editorItem}>
@@ -105,15 +111,6 @@ export function App() {
               beforeMount={handleHTMLEditorWillMount}
               theme={'vs-dark'}
               onChange={handleHTMLChange}
-            />
-          </div>
-          <div hidden={!(tabActive === 'typescript')}>
-            <Editor
-              height="100%"
-              defaultLanguage="typescript"
-              defaultValue="// typescript"
-              beforeMount={handleTypeScriptEditorWillMount}
-              theme={'vs-dark'}
             />
           </div>
           <div hidden={!(tabActive === 'scss')}>

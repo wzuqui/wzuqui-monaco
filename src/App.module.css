@@ -9,6 +9,8 @@
 }
 
 .editorTabs {
+  display: flex;
+  gap: 8px;
 }
 
 .editorItem {
