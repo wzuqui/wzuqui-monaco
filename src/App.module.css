@@ -1,0 +1,30 @@
+.app {
+  display: flex;
+  height: 100%;
+}
+
+.editors {
+  width: 50vw;
+  height: 100%;
+}
+
+.editorTabs {
+}
+
+.editorItem {
+  height: 100%;
+}
+
+.editorItem > div {
+  height: 100%;
+}
+
+.preview {
+  width: 50vw;
+}
+
+.preview iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
