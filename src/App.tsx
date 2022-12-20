@@ -107,9 +107,6 @@ export function App() {
     setSCSSEditor(true);
   }
   function handleTypeScriptEditor(monaco: Monaco) {
-    emmetJSX(monaco);
-    emmetHTML(monaco);
-
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
       noImplicitAny: false,
       strictNullChecks: false,

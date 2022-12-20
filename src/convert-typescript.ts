@@ -7,6 +7,7 @@ export function convertTypeScript(texto?: string) {
 
 export function converteParaHTMLScriptElement(texto?: string) {
   const retorno = document.createElement('script');
+  retorno.type = 'module';
   retorno.textContent = `(() => {\n${texto}\n})()`;
   texto ?? '';
   return retorno;
