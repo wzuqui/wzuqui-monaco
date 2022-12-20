@@ -9,6 +9,7 @@ import {
   convertTypeScript,
 } from './convert-typescript';
 import { useDebounce } from './hooks/useDebounce';
+import { useKeyboardShortcut } from './hooks/useKeyboardShortcut';
 
 type Tabs = 'html' | 'typescript' | 'scss';
 
@@ -149,6 +150,19 @@ export function App() {
         })
       );
   }
+
+  useKeyboardShortcut(
+    (p) => p.ctrlKey && p.key == 's',
+    (p) => {
+      p.preventDefault();
+      const resposta = confirm(
+        'Salvar irá substituir a url acima, deseja continuar?'
+      );
+      if (resposta) {
+        handleSalvar();
+      }
+    }
+  );
 
   useEffect(
     function () {
