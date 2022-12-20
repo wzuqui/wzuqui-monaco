@@ -147,6 +147,7 @@ export function App() {
         JSON.stringify({
           html,
           scss,
+          typescript,
         })
       );
   }
