@@ -67,6 +67,7 @@ export function App() {
   function handleHTMLChange(value?: string) {
     setHTML(value ?? '');
     appendHTML(value ?? '');
+    appendStyle(scss);
   }
   function handleSCSSChange(value?: string) {
     if (value) {
