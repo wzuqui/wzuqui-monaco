@@ -14,9 +14,19 @@ export function converteParaHTMLScriptElement(texto?: string) {
 }
 
 export const compilerOptions: ts.CompilerOptions = {
-  allowJs: true,
-  allowSyntheticDefaultImports: true,
+  allowNonTsExtensions: true,
+  emitDecoratorMetadata: false,
+  esModuleInterop: true,
+  experimentalDecorators: false,
   jsx: JsxEmit.React,
-  experimentalDecorators: true,
+  noImplicitAny: false,
+  noImplicitReturns: false,
+  noImplicitThis: false,
+  noSemanticValidation: false,
+  noSyntaxValidation: false,
+  removeComments: false,
+  strictFunctionTypes: false,
+  strictNullChecks: false,
+  strictPropertyInitialization: false,
   target: ScriptTarget.ESNext,
 };

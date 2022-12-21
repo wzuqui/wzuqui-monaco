@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import Editor, { Monaco } from '@monaco-editor/react';
-import { emmetHTML, emmetCSS, emmetJSX } from 'emmet-monaco-es';
+import { emmetHTML, emmetCSS } from 'emmet-monaco-es';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { JsxEmit } from 'typescript';
 
 import styles from './App.module.css';
 import { convertSCSS } from './convert-scss';
@@ -10,6 +12,9 @@ import {
 } from './convert-typescript';
 import { useDebounce } from './hooks/useDebounce';
 import { useKeyboardShortcut } from './hooks/useKeyboardShortcut';
+import { defaultHTML } from './defaults/html';
+import { defaultTypeScript } from './defaults/typescript';
+import { defaultScss } from './defaults/scss';
 
 type Tabs = 'html' | 'typescript' | 'scss';
 
@@ -29,9 +34,9 @@ function getURLState(): { html: string; scss: string; typescript: string } {
     }
   }
   return {
-    html: '<div id="app"></div>',
-    scss: '#app {}',
-    typescript: `const app = document.querySelector('#app');\nconsole.log(app)`,
+    html: defaultHTML,
+    scss: defaultScss,
+    typescript: defaultTypeScript,
   };
 }
 
@@ -108,20 +113,58 @@ export function App() {
   }
   function handleTypeScriptEditor(monaco: Monaco) {
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+      allowNonTsExtensions: true,
+      emitDecoratorMetadata: false,
+      esModuleInterop: true,
+      experimentalDecorators: false,
+      jsx: JsxEmit.React,
       noImplicitAny: false,
-      strictNullChecks: false,
-      strictFunctionTypes: false,
-      strictPropertyInitialization: false,
       noImplicitReturns: false,
       noImplicitThis: false,
+      noSemanticValidation: false,
+      noSyntaxValidation: false,
       removeComments: false,
-      experimentalDecorators: false,
-      emitDecoratorMetadata: false,
-      allowNonTsExtensions: true,
+      strictFunctionTypes: false,
+      strictNullChecks: false,
+      strictPropertyInitialization: false,
       target: monaco.languages.typescript.ScriptTarget.ES2020,
     });
 
+    const libs = import.meta.glob(
+      [
+        '../node_modules/@types/react/*.d.ts',
+        '../node_modules/@types/react-dom/*.d.ts',
+      ],
+      { as: 'raw' }
+    );
+
+    Object.entries(libs).forEach(([key, promise]) => {
+      const keySanitizado = key.replace('../node_modules/', '');
+
+      promise().then((value) => {
+        console.log('carregado lib', keySanitizado);
+        monaco.languages.typescript.typescriptDefaults.addExtraLib(
+          value,
+          keySanitizado
+        );
+      });
+    });
+
+    monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
+
     setTypeScriptEditor(true);
+  }
+  function handleTypeScriptDidMount(
+    editor: monaco.editor.IStandaloneCodeEditor,
+    monaco: Monaco
+  ) {
+    const model = monaco.editor.createModel(
+      typescript,
+      'typescript',
+      monaco.Uri.parse('index.tsx')
+    );
+
+    editor.setModel(model);
   }
 
   function handleHTMLChange(value?: string) {
@@ -193,10 +236,10 @@ export function App() {
             <Editor
               height="100%"
               defaultLanguage="typescript"
-              defaultValue={typescript}
               beforeMount={handleTypeScriptEditor}
               theme={'vs-dark'}
               onChange={handleTypeScriptChange}
+              onMount={handleTypeScriptDidMount}
             />
           </div>
           <div hidden={!(tabActive === 'scss')}>
