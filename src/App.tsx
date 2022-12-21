@@ -230,6 +230,7 @@ export function App() {
               beforeMount={handleHTMLEditor}
               theme={'vs-dark'}
               onChange={handleHTMLChange}
+              options={{ minimap: { enabled: false } }}
             />
           </div>
           <div hidden={!(tabActive === 'typescript')}>
@@ -240,6 +241,7 @@ export function App() {
               theme={'vs-dark'}
               onChange={handleTypeScriptChange}
               onMount={handleTypeScriptDidMount}
+              options={{ minimap: { enabled: false } }}
             />
           </div>
           <div hidden={!(tabActive === 'scss')}>
@@ -250,6 +252,7 @@ export function App() {
               beforeMount={handleSCSSEditor}
               theme={'vs-dark'}
               onChange={handleSCSSChange}
+              options={{ minimap: { enabled: false } }}
             />
           </div>
         </div>
