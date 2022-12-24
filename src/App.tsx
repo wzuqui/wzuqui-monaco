@@ -68,15 +68,6 @@ export function App() {
       console.log(error);
     }
   }
-  function appendHTML(text: string) {
-    if (iframeRef.current) {
-      if (iframeRef.current.contentWindow) {
-        iframeRef.current.contentWindow.document.open();
-        iframeRef.current.contentWindow.document.write(text ?? '');
-        iframeRef.current.contentWindow.document.close();
-      }
-    }
-  }
   function appendTypeScript(text: string) {
     if (iframeRef.current) {
       if (iframeRef.current.contentWindow) {
@@ -95,12 +86,14 @@ export function App() {
       if (iframeRef.current.contentWindow) {
         iframeRef.current.contentWindow.document.open();
         iframeRef.current.contentWindow.document.write(html);
+        iframeRef.current.contentWindow.document.write(
+          `<script src="//cdn.jsdelivr.net/npm/eruda"></script><script>eruda.init();eruda.show();</script>`
+        );
         iframeRef.current.contentWindow.document.close();
+        appendStyle(scss);
+        appendTypeScript(typescript);
       }
     }
-    appendHTML(html);
-    appendStyle(scss);
-    appendTypeScript(typescript);
   }
 
   function handleHTMLEditor(monaco: Monaco) {
