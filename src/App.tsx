@@ -87,7 +87,7 @@ export function App() {
         iframeRef.current.contentWindow.document.open();
         iframeRef.current.contentWindow.document.write(html);
         iframeRef.current.contentWindow.document.write(
-          `<script src="//cdn.jsdelivr.net/npm/eruda"></script><script>eruda.init();eruda.show();</script>`
+          `<script src="//cdn.jsdelivr.net/npm/eruda"></script><script>eruda.init();eruda.position({x: '95%', y: '55%'});eruda.show();</script>`
         );
         iframeRef.current.contentWindow.document.close();
         appendStyle(scss);
