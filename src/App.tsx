@@ -121,6 +121,7 @@ export function App() {
       strictNullChecks: false,
       strictPropertyInitialization: false,
       target: monaco.languages.typescript.ScriptTarget.ES2020,
+      typeRoots: ['node_modules/@types'],
     });
 
     const libs = import.meta.glob(
@@ -131,8 +132,18 @@ export function App() {
       { as: 'raw' }
     );
 
+    monaco.languages.typescript.typescriptDefaults.addExtraLib(
+      `declare module ReactDOM {
+        export function createRoot(container: Element | DocumentFragment, options?: RootOptions): Root;
+      }`,
+      'file:///./react-dom.d.ts'
+    );
+
     Object.entries(libs).forEach(([key, promise]) => {
-      const keySanitizado = key.replace('../node_modules/', '');
+      const keySanitizado = key.replace(
+        '../node_modules/',
+        'file:///./node_modules/'
+      );
 
       promise().then((value) => {
         console.log('carregado lib', keySanitizado);
@@ -154,7 +165,7 @@ export function App() {
     const model = monaco.editor.createModel(
       typescript,
       'typescript',
-      monaco.Uri.parse('index.tsx')
+      monaco.Uri.parse('file:///index.tsx')
     );
 
     editor.setModel(model);

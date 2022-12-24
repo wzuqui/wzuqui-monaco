@@ -1,13 +1,13 @@
 export const defaultTypeScript = `
 function App() {
+  const [ contador, setContador ] = React.useState(1);
 
   function handleClick() {
-    console.log('teste');
-    alert('teste')
+    setContador(contador + 1);
   }
 
   return (
-    <Button onClick={() => handleClick()}>teste</Button>
+    <Button onClick={() => handleClick()}>{contador} + 1</Button>
   );
 }
 
@@ -19,5 +19,7 @@ function Button(props: React.PropsWithChildren<{}> & React.ButtonHTMLAttributes<
 }
 
 // main.ts
-ReactDOM.render(<App />, document.getElementById('root') as HTMLElement)
+const container = document.getElementById('root');
+const root = ReactDOM.createRoot(container);
+root.render(<App />);
 `;
