@@ -5,7 +5,7 @@ interface Props {
   clientId: string;
 }
 
-export function GitHubLoginZuqui(props: Props) {
+export function GitHubLogin(props: Props) {
   const service = new GitHubApiService();
   const code = getCode();
   const [token, setToken] = useState('');

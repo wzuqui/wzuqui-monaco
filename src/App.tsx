@@ -16,8 +16,7 @@ import { useKeyboardShortcut } from './hooks/useKeyboardShortcut';
 import { defaultHTML } from './defaults/html';
 import { defaultTypeScript } from './defaults/typescript';
 import { defaultScss } from './defaults/scss';
-import GitHubLogin from './github/GitHubLogin.jsx';
-import { GitHubLoginZuqui } from './github/GitHubLoginZuqui';
+import { GitHubLogin } from './github/GitHubLogin';
 
 type Tabs = 'html' | 'typescript' | 'scss';
 
