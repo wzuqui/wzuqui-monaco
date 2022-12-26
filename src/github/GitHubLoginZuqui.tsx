@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { GetUserResponse } from './api';
 import { GitHubApiService } from './api';
 
 interface Props {
@@ -6,30 +7,44 @@ interface Props {
 }
 
 export function GitHubLoginZuqui(props: Props) {
-  const service = new GitHubApiService('https://cors-anywhere.herokuapp.com/');
+  const service = new GitHubApiService();
   const code = getCode();
+  const [token, setToken] = useState('');
+  const [user, setUser] = useState<GetUserResponse | null>(null);
 
   useEffect(() => {
     (async function () {
-      if (code) {
-        try {
-          const response = await service.getToken(code);
-          const data = await response.text();
-          console.log('GitHubLoginZuqui.useEffect.response', response);
-        } catch (error) {
-          console.log('GitHubLoginZuqui.useEffect', error);
+      if (!code) return;
+      if (token !== '') return;
+      try {
+        const tokenResponse = await service.getToken(code);
+        if (tokenResponse.access_token) {
+          setToken(tokenResponse.access_token);
         }
+      } catch (error) {
+        console.log('GitHubLoginZuqui.useEffect', error);
       }
     })();
-  }, []);
+  }, [token]);
+
+  useEffect(() => {
+    (async function () {
+      if (token === '') return;
+      const userResponse = await service.getUser(token);
+      setUser(userResponse);
+    })();
+  }, [token]);
 
   function handleLogin() {
     location = service.getCode();
   }
   return (
-    <button onClick={handleLogin}>
-      {code === null ? 'Login' : 'Refazer Login'}
-    </button>
+    <>
+      <button onClick={handleLogin}>
+        {code === null ? 'Login' : 'Refazer Login'}
+      </button>
+      <span>{user?.name}</span>
+    </>
   );
 }
 

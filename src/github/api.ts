@@ -21,15 +21,10 @@ export class GitHubApiService {
       'https://wzuquimonaco-d3pd--5173.local-corp.webcontainer.io'
     );
 
-    const options = {
+    return fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
       body: form,
-    };
-
-    return fetch('https://github.com/login/oauth/access_token', options)
-      .then((response) => response.text())
-      .then((response) => console.log(response))
-      .catch((err) => console.error(err));
+    }).then(async (p) => parseAccessToken(await p.text()));
   }
 
   public getGists(token: string) {
@@ -39,4 +34,65 @@ export class GitHubApiService {
       },
     });
   }
+
+  public getUser(token: string): Promise<GetUserResponse> {
+    return fetch(`https://api.github.com/user`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then(async p => await p.json());
+  }
+}
+
+function parseAccessToken(text: string) {
+  const obj = text.split('&').reduce((acc, curr) => {
+    const [key, value] = curr.split('=');
+    acc[key] = value;
+    return acc;
+  }, {} as Record<string, string>);
+  return obj as unknown as AccessTokenResponse;
+}
+
+export interface AccessTokenResponse {
+  access_token: string;
+  expires_in: string;
+  refresh_token: string;
+  refresh_token_expires_in: string;
+  scope: string;
+  token_type: string;
+}
+
+export interface GetUserResponse {
+  login: string
+  id: number
+  node_id: string
+  avatar_url: string
+  gravatar_id: string
+  url: string
+  html_url: string
+  followers_url: string
+  following_url: string
+  gists_url: string
+  starred_url: string
+  subscriptions_url: string
+  organizations_url: string
+  repos_url: string
+  events_url: string
+  received_events_url: string
+  type: string
+  site_admin: boolean
+  name: string
+  company: string
+  blog: string
+  location: string
+  email: string
+  hireable: any
+  bio: string
+  twitter_username: any
+  public_repos: number
+  public_gists: number
+  followers: number
+  following: number
+  created_at: string
+  updated_at: string
 }
