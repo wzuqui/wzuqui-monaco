@@ -15,6 +15,8 @@ import { useKeyboardShortcut } from './hooks/useKeyboardShortcut';
 import { defaultHTML } from './defaults/html';
 import { defaultTypeScript } from './defaults/typescript';
 import { defaultScss } from './defaults/scss';
+import GitHubLogin from './github/GitHubLogin.jsx';
+import { GitHubLoginZuqui } from './github/GitHubLoginZuqui';
 
 type Tabs = 'html' | 'typescript' | 'scss';
 
@@ -215,6 +217,7 @@ export function App() {
     },
     [HTMLEditor, SCSSEditor, TypeScriptEditor]
   );
+
   return (
     <div className={styles.app}>
       <div className={styles.editors}>
@@ -224,6 +227,7 @@ export function App() {
           <button onClick={() => setTabActive('scss')}>SCSS</button>
           <div>|</div>
           <button onClick={() => handleSalvar()}>Salvar</button>
+          <GitHubLoginZuqui clientId="Iv1.8c39cf167e7c5adc" />
         </div>
         <div className={styles.editorItem}>
           <div hidden={!(tabActive === 'html')}>
