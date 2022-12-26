@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react';
-import { GetUserResponse, GitHubApiService } from './api';
 
-interface Props {
-  clientId: string;
-}
+import { GetUserResponse, GitHubApiService } from './GitHubApiService';
 
-export function GitHubLogin(props: Props) {
+export function GitHubLogin() {
   const service = new GitHubApiService();
   const code = getCode();
   const [token, setToken] = useState('');

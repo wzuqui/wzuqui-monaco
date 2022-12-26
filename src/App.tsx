@@ -230,7 +230,7 @@ export function App() {
             <button onClick={() => setTabActive('scss')}>SCSS</button>
             <div>|</div>
             <button onClick={() => handleSalvar()}>Salvar</button>
-            <GitHubLoginZuqui clientId="Iv1.8c39cf167e7c5adc" />
+            <GitHubLogin />
           </div>
           <div className={styles.editorItem}>
             <div hidden={!(tabActive === 'html')}>
