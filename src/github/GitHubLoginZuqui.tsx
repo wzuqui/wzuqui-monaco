@@ -36,7 +36,7 @@ export function GitHubLoginZuqui(props: Props) {
   }, [token]);
 
   function handleLogin() {
-    location = service.getCode();
+    window.location.href = service.getCode();
   }
   return (
     <>
