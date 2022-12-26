@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-import { GetUserResponse } from './api';
-import { GitHubApiService } from './api';
+import { useEffect, useState } from 'react';
+import { GetUserResponse, GitHubApiService } from './api';
 
 interface Props {
   clientId: string;
