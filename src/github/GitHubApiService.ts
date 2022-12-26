@@ -43,11 +43,16 @@ export interface GetUserResponse {
 }
 
 export class GitHubApiService {
-  client_id = 'Iv1.8c39cf167e7c5adc';
-  client_secret = '3a3c605c9d912d4c3ab4fe8e09576970d8e8d011';
-  redirect_uri = `${location.origin}`;
+  client_id = '';
+  client_secret = '';
+  redirect_uri = '';
 
-  constructor() {}
+  constructor() {
+    this.client_id = import.meta.env.VITE_GITHUB_CLIENT_ID;
+    this.client_secret = import.meta.env.VITE_GITHUB_CLIENT_SECRET;
+    this.redirect_uri = import.meta.env.VITE_GITHUB_REDIRECT_URI;
+    console.log(this);
+  }
 
   public getCode() {
     return `https://github.com/login/oauth/authorize?client_id=${
