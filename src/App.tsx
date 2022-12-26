@@ -1,3 +1,4 @@
+import Split from 'react-split';
 import { useEffect, useRef, useState } from 'react';
 import Editor, { Monaco } from '@monaco-editor/react';
 import { emmetHTML, emmetCSS } from 'emmet-monaco-es';
@@ -220,54 +221,58 @@ export function App() {
 
   return (
     <div className={styles.app}>
-      <div className={styles.editors}>
-        <div className={styles.editorTabs}>
-          <button onClick={() => setTabActive('html')}>HTML</button>
-          <button onClick={() => setTabActive('typescript')}>TypeScript</button>
-          <button onClick={() => setTabActive('scss')}>SCSS</button>
-          <div>|</div>
-          <button onClick={() => handleSalvar()}>Salvar</button>
-          <GitHubLoginZuqui clientId="Iv1.8c39cf167e7c5adc" />
+      <Split direction="horizontal" className={styles.split}>
+        <div className={styles.editors}>
+          <div className={styles.editorTabs}>
+            <button onClick={() => setTabActive('html')}>HTML</button>
+            <button onClick={() => setTabActive('typescript')}>
+              TypeScript
+            </button>
+            <button onClick={() => setTabActive('scss')}>SCSS</button>
+            <div>|</div>
+            <button onClick={() => handleSalvar()}>Salvar</button>
+            <GitHubLoginZuqui clientId="Iv1.8c39cf167e7c5adc" />
+          </div>
+          <div className={styles.editorItem}>
+            <div hidden={!(tabActive === 'html')}>
+              <Editor
+                height="100%"
+                defaultLanguage="html"
+                defaultValue={html}
+                beforeMount={handleHTMLEditor}
+                theme={'vs-dark'}
+                onChange={handleHTMLChange}
+                options={{ minimap: { enabled: false } }}
+              />
+            </div>
+            <div hidden={!(tabActive === 'typescript')}>
+              <Editor
+                height="100%"
+                defaultLanguage="typescript"
+                beforeMount={handleTypeScriptEditor}
+                theme={'vs-dark'}
+                onChange={handleTypeScriptChange}
+                onMount={handleTypeScriptDidMount}
+                options={{ minimap: { enabled: false } }}
+              />
+            </div>
+            <div hidden={!(tabActive === 'scss')}>
+              <Editor
+                height="100%"
+                defaultLanguage="scss"
+                defaultValue={scss}
+                beforeMount={handleSCSSEditor}
+                theme={'vs-dark'}
+                onChange={handleSCSSChange}
+                options={{ minimap: { enabled: false } }}
+              />
+            </div>
+          </div>
         </div>
-        <div className={styles.editorItem}>
-          <div hidden={!(tabActive === 'html')}>
-            <Editor
-              height="100%"
-              defaultLanguage="html"
-              defaultValue={html}
-              beforeMount={handleHTMLEditor}
-              theme={'vs-dark'}
-              onChange={handleHTMLChange}
-              options={{ minimap: { enabled: false } }}
-            />
-          </div>
-          <div hidden={!(tabActive === 'typescript')}>
-            <Editor
-              height="100%"
-              defaultLanguage="typescript"
-              beforeMount={handleTypeScriptEditor}
-              theme={'vs-dark'}
-              onChange={handleTypeScriptChange}
-              onMount={handleTypeScriptDidMount}
-              options={{ minimap: { enabled: false } }}
-            />
-          </div>
-          <div hidden={!(tabActive === 'scss')}>
-            <Editor
-              height="100%"
-              defaultLanguage="scss"
-              defaultValue={scss}
-              beforeMount={handleSCSSEditor}
-              theme={'vs-dark'}
-              onChange={handleSCSSChange}
-              options={{ minimap: { enabled: false } }}
-            />
-          </div>
+        <div className={styles.preview}>
+          <iframe ref={iframeRef}></iframe>
         </div>
-      </div>
-      <div className={styles.preview}>
-        <iframe ref={iframeRef}></iframe>
-      </div>
+      </Split>
     </div>
   );
 }
