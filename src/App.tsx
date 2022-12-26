@@ -4,7 +4,6 @@ import Editor, { Monaco } from '@monaco-editor/react';
 import { emmetHTML, emmetCSS } from 'emmet-monaco-es';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
-import styles from './App.module.css';
 import { useDebounce } from './hooks/useDebounce';
 import { useKeyboardShortcut } from './hooks/useKeyboardShortcut';
 import { GitHubLogin } from './github/GitHubLogin';
@@ -12,6 +11,11 @@ import { obterUrlEstado } from './helpers/obterUrlEstado';
 import { repaint } from './helpers/repaint';
 import { emmetReact } from './helpers/emmetReact';
 import { salvarUrlEstado } from './helpers/salvarUrlEstado';
+import { styled } from './styled';
+import { ReactIcon } from './icons/ReactIcon';
+import { TypeScriptIcon } from './icons/TypeScriptIcon';
+import { SassIcon } from './icons/Sass';
+import { HtmlIcon } from './icons/HtmlIcon';
 
 type Abas = 'html' | 'typescript' | 'scss';
 enum Carregado {
@@ -91,21 +95,40 @@ export function App() {
   }
 
   return (
-    <div className={styles.app}>
-      <Split direction="horizontal" className={styles.split}>
-        <div className={styles.editors}>
-          <div className={styles.editorTabs}>
-            <button onClick={() => setAbaAtiva('html')}>HTML</button>
-            <button onClick={() => setAbaAtiva('typescript')}>
-              TypeScript
-            </button>
-            <button onClick={() => setAbaAtiva('scss')}>SCSS</button>
-            <div>|</div>
-            <button onClick={() => acaoSalvar()}>Salvar</button>
-            <GitHubLogin />
-          </div>
-          <div className={styles.editorItem}>
-            <div hidden={!(abaAtiva === 'html')}>
+    <Container className="container">
+      <Splitter className="splitter">
+        <Editors className="editors">
+          <Header>
+            <Abas className="abas">
+              <Aba
+                ativa={abaAtiva === 'html'}
+                onClick={() => setAbaAtiva('html')}
+              >
+                <HtmlIcon />
+                <span>index.html</span>
+              </Aba>
+              <Aba
+                ativa={abaAtiva === 'typescript'}
+                onClick={() => setAbaAtiva('typescript')}
+              >
+                <ReactIcon />
+                <span>index.tsx</span>
+              </Aba>
+              <Aba
+                ativa={abaAtiva === 'scss'}
+                onClick={() => setAbaAtiva('scss')}
+              >
+                <SassIcon />
+                <span>index.scss</span>
+              </Aba>
+            </Abas>
+            <div>
+              <button onClick={() => acaoSalvar()}>Salvar</button>
+              <GitHubLogin />
+            </div>
+          </Header>
+          <EditorItens className="editor-itens">
+            <EditorItem hidden={!(abaAtiva === 'html')}>
               <Editor
                 height="100%"
                 defaultLanguage="html"
@@ -115,8 +138,8 @@ export function App() {
                 onChange={acaoHtml}
                 options={{ minimap: { enabled: false } }}
               />
-            </div>
-            <div hidden={!(abaAtiva === 'typescript')}>
+            </EditorItem>
+            <EditorItem hidden={!(abaAtiva === 'typescript')}>
               <Editor
                 height="100%"
                 defaultLanguage="typescript"
@@ -126,8 +149,8 @@ export function App() {
                 onMount={acaoTypescriptMount}
                 options={{ minimap: { enabled: false } }}
               />
-            </div>
-            <div hidden={!(abaAtiva === 'scss')}>
+            </EditorItem>
+            <EditorItem hidden={!(abaAtiva === 'scss')}>
               <Editor
                 height="100%"
                 defaultLanguage="scss"
@@ -137,13 +160,95 @@ export function App() {
                 onChange={acaoScss}
                 options={{ minimap: { enabled: false } }}
               />
-            </div>
-          </div>
-        </div>
-        <div className={styles.preview}>
-          <iframe ref={iframeRef}></iframe>
-        </div>
-      </Split>
-    </div>
+            </EditorItem>
+          </EditorItens>
+        </Editors>
+        <Preview>
+          <PreviewItem ref={iframeRef}></PreviewItem>
+        </Preview>
+      </Splitter>
+    </Container>
   );
 }
+
+const Container = styled('div', {
+  display: 'flex',
+  height: '100%',
+  overflow: 'hidden',
+});
+
+const Splitter = styled(Split, {
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'row',
+});
+
+const Preview = styled('div', {
+  width: '100%',
+  height: '100%',
+  flex: '1 1 auto',
+  overflow: 'auto',
+});
+
+const Editors = styled('div', {
+  width: '100%',
+  height: '100%',
+  flex: '1 1 auto',
+  overflow: 'auto',
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+const EditorItens = styled('div', {
+  flex: '1 1 auto',
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+const EditorItem = styled('div', {
+  flex: '1 1 auto',
+  width: '100%',
+});
+
+const Header = styled('div', {
+  display: 'flex',
+  justifyContent: 'space-between',
+  backgroundColor: '#202327',
+});
+
+const Abas = styled('div', 'Abas', {
+  display: 'flex',
+});
+
+const Aba = styled('div', {
+  height: '38px',
+  border: 'none',
+  borderRight: '1px solid #15181e',
+  backgroundColor: '#26292e',
+  padding: '0 12px',
+  fontSize: 'small',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  cursor: 'pointer',
+  gap: '8px',
+
+  variants: {
+    ativa: {
+      true: {
+        backgroundColor: '#15181e',
+      },
+    },
+  },
+
+  '> svg': {
+    width: '16px',
+    height: '16px',
+  },
+});
+
+const PreviewItem = styled('iframe', {
+  width: '100%',
+  height: '100%',
+  border: 'none',
+});
