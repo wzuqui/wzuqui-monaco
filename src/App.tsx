@@ -16,6 +16,7 @@ import { ReactIcon } from './icons/ReactIcon';
 import { SassIcon } from './icons/Sass';
 import { HtmlIcon } from './icons/HtmlIcon';
 import { dracula } from './themes/dracula';
+import { MonacoTree } from './monaco-tree/MonacoTree';
 
 type Abas = 'html' | 'typescript' | 'scss';
 enum Carregado {
@@ -105,79 +106,84 @@ export function App() {
     salvarUrlEstado(html, scss, typescript);
   }
 
+  const resto = false;
+
   return (
     <Container className="container">
-      <Splitter className="splitter">
-        <Editors className="editors">
-          <Header>
-            <Abas className="abas">
-              <Aba
-                ativa={abaAtiva === 'html'}
-                onClick={() => setAbaAtiva('html')}
-              >
-                <HtmlIcon />
-                <span>index.html</span>
-              </Aba>
-              <Aba
-                ativa={abaAtiva === 'typescript'}
-                onClick={() => setAbaAtiva('typescript')}
-              >
-                <ReactIcon />
-                <span>index.tsx</span>
-              </Aba>
-              <Aba
-                ativa={abaAtiva === 'scss'}
-                onClick={() => setAbaAtiva('scss')}
-              >
-                <SassIcon />
-                <span>index.scss</span>
-              </Aba>
-            </Abas>
-            <div>
-              <button onClick={() => acaoSalvar()}>Salvar</button>
-              <GitHubLogin />
-            </div>
-          </Header>
-          <EditorItens className="editor-itens">
-            <EditorItem hidden={!(abaAtiva === 'html')}>
-              <Editor
-                height="100%"
-                defaultLanguage="html"
-                defaultValue={html}
-                beforeMount={acaoHtmlBeforeMount}
-                theme={'dracula'}
-                onChange={acaoHtml}
-                options={editorOptions}
-              />
-            </EditorItem>
-            <EditorItem hidden={!(abaAtiva === 'typescript')}>
-              <Editor
-                height="100%"
-                defaultLanguage="typescript"
-                beforeMount={acaoTypescriptBeforeMount}
-                theme={'dracula'}
-                onChange={acaoTypescript}
-                onMount={acaoTypescriptMount}
-                options={editorOptions}
-              />
-            </EditorItem>
-            <EditorItem hidden={!(abaAtiva === 'scss')}>
-              <Editor
-                height="100%"
-                defaultLanguage="scss"
-                defaultValue={scss}
-                beforeMount={acaoScssBeforeMount}
-                theme={'dracula'}
-                onChange={acaoScss}
-                options={editorOptions}
-              />
-            </EditorItem>
-          </EditorItens>
-        </Editors>
-        <Preview>
-          <PreviewItem ref={iframeRef}></PreviewItem>
-        </Preview>
-      </Splitter>
+      <MonacoTree />
+      {resto === false ? null : (
+        <Splitter className="splitter">
+          <Editors className="editors">
+            <Header>
+              <Abas className="abas">
+                <Aba
+                  ativa={abaAtiva === 'html'}
+                  onClick={() => setAbaAtiva('html')}
+                >
+                  <HtmlIcon />
+                  <span>index.html</span>
+                </Aba>
+                <Aba
+                  ativa={abaAtiva === 'typescript'}
+                  onClick={() => setAbaAtiva('typescript')}
+                >
+                  <ReactIcon />
+                  <span>index.tsx</span>
+                </Aba>
+                <Aba
+                  ativa={abaAtiva === 'scss'}
+                  onClick={() => setAbaAtiva('scss')}
+                >
+                  <SassIcon />
+                  <span>index.scss</span>
+                </Aba>
+              </Abas>
+              <div>
+                <button onClick={() => acaoSalvar()}>Salvar</button>
+                <GitHubLogin />
+              </div>
+            </Header>
+            <EditorItens className="editor-itens">
+              <EditorItem hidden={!(abaAtiva === 'html')}>
+                <Editor
+                  height="100%"
+                  defaultLanguage="html"
+                  defaultValue={html}
+                  beforeMount={acaoHtmlBeforeMount}
+                  theme={'dracula'}
+                  onChange={acaoHtml}
+                  options={editorOptions}
+                />
+              </EditorItem>
+              <EditorItem hidden={!(abaAtiva === 'typescript')}>
+                <Editor
+                  height="100%"
+                  defaultLanguage="typescript"
+                  beforeMount={acaoTypescriptBeforeMount}
+                  theme={'dracula'}
+                  onChange={acaoTypescript}
+                  onMount={acaoTypescriptMount}
+                  options={editorOptions}
+                />
+              </EditorItem>
+              <EditorItem hidden={!(abaAtiva === 'scss')}>
+                <Editor
+                  height="100%"
+                  defaultLanguage="scss"
+                  defaultValue={scss}
+                  beforeMount={acaoScssBeforeMount}
+                  theme={'dracula'}
+                  onChange={acaoScss}
+                  options={editorOptions}
+                />
+              </EditorItem>
+            </EditorItens>
+          </Editors>
+          <Preview>
+            <PreviewItem ref={iframeRef}></PreviewItem>
+          </Preview>
+        </Splitter>
+      )}
     </Container>
   );
 }
