@@ -1,11 +1,28 @@
 import ts, { JsxEmit, ScriptTarget } from 'typescript';
 
-export function convertTypeScript(texto?: string) {
+export function appendTypeScript(
+  iframeRef: React.RefObject<HTMLIFrameElement>,
+  html: string
+) {
+  if (iframeRef.current) {
+    if (iframeRef.current.contentWindow) {
+      try {
+        const javascript = convertTypeScript(html);
+        const element = converteParaHTMLScriptElement(javascript);
+        iframeRef.current.contentWindow.document.body.appendChild(element);
+      } catch {
+        // ignored
+      }
+    }
+  }
+}
+
+function convertTypeScript(texto?: string) {
   const retorno = ts.transpile(texto ?? '', compilerOptions);
   return retorno;
 }
 
-export function converteParaHTMLScriptElement(texto?: string) {
+function converteParaHTMLScriptElement(texto?: string) {
   const retorno = document.createElement('script');
   retorno.type = 'module';
   retorno.textContent = `(() => {\n${texto}\n})()`;
@@ -13,7 +30,7 @@ export function converteParaHTMLScriptElement(texto?: string) {
   return retorno;
 }
 
-export const compilerOptions: ts.CompilerOptions = {
+const compilerOptions: ts.CompilerOptions = {
   allowNonTsExtensions: true,
   emitDecoratorMetadata: false,
   esModuleInterop: true,

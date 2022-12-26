@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 export function useDebounce(
   callback: () => void,
   delay: number
-): [boolean, React.Dispatch<React.SetStateAction<boolean>>] {
+): [React.Dispatch<React.SetStateAction<boolean>>, boolean] {
   const [debouncing, setDebouncing] = useState(false);
 
   useEffect(() => {
@@ -19,5 +19,5 @@ export function useDebounce(
     }
   }, [debouncing, callback, delay]);
 
-  return [debouncing, setDebouncing];
+  return [setDebouncing, debouncing];
 }
