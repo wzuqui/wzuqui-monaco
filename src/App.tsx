@@ -13,7 +13,6 @@ import { emmetReact } from './helpers/emmetReact';
 import { salvarUrlEstado } from './helpers/salvarUrlEstado';
 import { styled } from './styled';
 import { ReactIcon } from './icons/ReactIcon';
-import { TypeScriptIcon } from './icons/TypeScriptIcon';
 import { SassIcon } from './icons/Sass';
 import { HtmlIcon } from './icons/HtmlIcon';
 
