@@ -1,7 +1,7 @@
 export class GitHubApiService {
   client_id = 'Iv1.8c39cf167e7c5adc';
   client_secret = '3a3c605c9d912d4c3ab4fe8e09576970d8e8d011';
-  redirect_uri = 'https://wzuquimonaco-d3pd--5173.local-corp.webcontainer.io';
+  redirect_uri = `${location.origin}`;
 
   constructor() {}
 
@@ -13,13 +13,10 @@ export class GitHubApiService {
 
   public getToken(code: string) {
     const form = new FormData();
-    form.append('client_id', 'Iv1.8c39cf167e7c5adc');
-    form.append('client_secret', '3a3c605c9d912d4c3ab4fe8e09576970d8e8d011');
+    form.append('client_id', this.client_id);
+    form.append('client_secret', this.client_secret);
     form.append('code', code);
-    form.append(
-      'redirect_uri',
-      'https://wzuquimonaco-d3pd--5173.local-corp.webcontainer.io'
-    );
+    form.append('redirect_uri', this.redirect_uri);
 
     return fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
@@ -40,7 +37,7 @@ export class GitHubApiService {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }).then(async p => await p.json());
+    }).then(async (p) => await p.json());
   }
 }
 
@@ -63,36 +60,36 @@ export interface AccessTokenResponse {
 }
 
 export interface GetUserResponse {
-  login: string
-  id: number
-  node_id: string
-  avatar_url: string
-  gravatar_id: string
-  url: string
-  html_url: string
-  followers_url: string
-  following_url: string
-  gists_url: string
-  starred_url: string
-  subscriptions_url: string
-  organizations_url: string
-  repos_url: string
-  events_url: string
-  received_events_url: string
-  type: string
-  site_admin: boolean
-  name: string
-  company: string
-  blog: string
-  location: string
-  email: string
-  hireable: any
-  bio: string
-  twitter_username: any
-  public_repos: number
-  public_gists: number
-  followers: number
-  following: number
-  created_at: string
-  updated_at: string
+  login: string;
+  id: number;
+  node_id: string;
+  avatar_url: string;
+  gravatar_id: string;
+  url: string;
+  html_url: string;
+  followers_url: string;
+  following_url: string;
+  gists_url: string;
+  starred_url: string;
+  subscriptions_url: string;
+  organizations_url: string;
+  repos_url: string;
+  events_url: string;
+  received_events_url: string;
+  type: string;
+  site_admin: boolean;
+  name: string;
+  company: string;
+  blog: string;
+  location: string;
+  email: string;
+  hireable: any;
+  bio: string;
+  twitter_username: any;
+  public_repos: number;
+  public_gists: number;
+  followers: number;
+  following: number;
+  created_at: string;
+  updated_at: string;
 }
