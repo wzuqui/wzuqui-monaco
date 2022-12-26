@@ -15,6 +15,7 @@ import { styled } from './styled';
 import { ReactIcon } from './icons/ReactIcon';
 import { SassIcon } from './icons/Sass';
 import { HtmlIcon } from './icons/HtmlIcon';
+import { dracula } from './themes/dracula';
 
 type Abas = 'html' | 'typescript' | 'scss';
 enum Carregado {
@@ -24,6 +25,14 @@ enum Carregado {
   scss = 4,
   todos = 7,
 }
+const editorOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
+  minimap: { enabled: false },
+  tabSize: 2,
+  renderWhitespace: 'all',
+  fontFamily: 'Fira Code',
+  fontLigatures: true,
+  fontSize: 14,
+};
 
 export function App() {
   const urlEstado = obterUrlEstado();
@@ -58,6 +67,7 @@ export function App() {
     editor: monaco.editor.IStandaloneCodeEditor,
     monaco: Monaco
   ) {
+    monaco.editor.defineTheme('dracula', dracula);
     const model = monaco.editor.createModel(
       typescript,
       'typescript',
@@ -66,10 +76,12 @@ export function App() {
     editor.setModel(model);
   }
   function acaoHtmlBeforeMount(monaco: Monaco) {
+    monaco.editor.defineTheme('dracula', dracula);
     emmetHTML(monaco);
     setCarregado((p) => p | Carregado.html);
   }
   function acaoScssBeforeMount(monaco: Monaco) {
+    monaco.editor.defineTheme('dracula', dracula);
     emmetCSS(monaco);
     setCarregado((p) => p | Carregado.scss);
   }
@@ -133,9 +145,9 @@ export function App() {
                 defaultLanguage="html"
                 defaultValue={html}
                 beforeMount={acaoHtmlBeforeMount}
-                theme={'vs-dark'}
+                theme={'dracula'}
                 onChange={acaoHtml}
-                options={{ minimap: { enabled: false } }}
+                options={editorOptions}
               />
             </EditorItem>
             <EditorItem hidden={!(abaAtiva === 'typescript')}>
@@ -143,10 +155,10 @@ export function App() {
                 height="100%"
                 defaultLanguage="typescript"
                 beforeMount={acaoTypescriptBeforeMount}
-                theme={'vs-dark'}
+                theme={'dracula'}
                 onChange={acaoTypescript}
                 onMount={acaoTypescriptMount}
-                options={{ minimap: { enabled: false } }}
+                options={editorOptions}
               />
             </EditorItem>
             <EditorItem hidden={!(abaAtiva === 'scss')}>
@@ -155,9 +167,9 @@ export function App() {
                 defaultLanguage="scss"
                 defaultValue={scss}
                 beforeMount={acaoScssBeforeMount}
-                theme={'vs-dark'}
+                theme={'dracula'}
                 onChange={acaoScss}
-                options={{ minimap: { enabled: false } }}
+                options={editorOptions}
               />
             </EditorItem>
           </EditorItens>

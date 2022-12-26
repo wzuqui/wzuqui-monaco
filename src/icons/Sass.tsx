@@ -5,7 +5,6 @@ export const SassIcon = styled(
     <svg
       stroke="#c76395"
       fill="#c76395"
-      stroke-width="0"
       version="1.1"
       viewBox="0 0 32 32"
       height="1em"

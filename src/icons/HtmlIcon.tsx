@@ -5,7 +5,6 @@ export const HtmlIcon = styled(
     <svg
       stroke="#d74b24"
       fill="#d74b24"
-      stroke-width="0"
       version="1.1"
       viewBox="0 0 32 32"
       height="1em"

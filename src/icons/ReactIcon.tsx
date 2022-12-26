@@ -5,7 +5,6 @@ export const ReactIcon = styled(
     <svg
       stroke="#00d1f7"
       fill="#00d1f7"
-      stroke-width="0"
       version="1.1"
       viewBox="0 0 34 32"
       height="1em"
