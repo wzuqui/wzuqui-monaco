@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 
 import { GetUserResponse, GitHubApiService } from './GitHubApiService';
 
+const service = new GitHubApiService();
+
 export function GitHubLogin() {
-  const service = new GitHubApiService();
   const code = getCode();
   const [token, setToken] = useState('');
   const [user, setUser] = useState<GetUserResponse | null>(null);

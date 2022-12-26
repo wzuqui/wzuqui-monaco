@@ -107,6 +107,7 @@ export function App() {
     setSCSSEditor(true);
   }
   function handleTypeScriptEditor(monaco: Monaco) {
+    emmetHTML(monaco);
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
       allowNonTsExtensions: true,
       emitDecoratorMetadata: false,
@@ -116,8 +117,8 @@ export function App() {
       noImplicitAny: false,
       noImplicitReturns: false,
       noImplicitThis: false,
-      noSemanticValidation: false,
-      noSyntaxValidation: false,
+      noSemanticValidation: true,
+      noSyntaxValidation: true,
       removeComments: false,
       strictFunctionTypes: false,
       strictNullChecks: false,
@@ -169,7 +170,6 @@ export function App() {
       'typescript',
       monaco.Uri.parse('file:///index.tsx')
     );
-
     editor.setModel(model);
   }
 
