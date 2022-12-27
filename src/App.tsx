@@ -1,22 +1,23 @@
-import Split from 'react-split';
-import { useEffect, useRef, useState } from 'react';
 import Editor, { Monaco } from '@monaco-editor/react';
-import { emmetHTML, emmetCSS } from 'emmet-monaco-es';
+import { emmetCSS, emmetHTML } from 'emmet-monaco-es';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { useEffect, useRef, useState } from 'react';
+import Split from 'react-split';
 
-import { useDebounce } from './hooks/useDebounce';
-import { useKeyboardShortcut } from './hooks/useKeyboardShortcut';
 import { GitHubLogin } from './github/GitHubLogin';
+import { emmetReact } from './helpers/emmetReact';
 import { obterUrlEstado } from './helpers/obterUrlEstado';
 import { repaint } from './helpers/repaint';
-import { emmetReact } from './helpers/emmetReact';
 import { salvarUrlEstado } from './helpers/salvarUrlEstado';
-import { styled } from './styled';
+import { useDebounce } from './hooks/useDebounce';
+import { useKeyboardShortcut } from './hooks/useKeyboardShortcut';
+import { HtmlIcon } from './icons/HtmlIcon';
 import { ReactIcon } from './icons/ReactIcon';
 import { SassIcon } from './icons/Sass';
-import { HtmlIcon } from './icons/HtmlIcon';
+import { MonacoTree as MonacoTreeBase } from './monaco-tree/monaco-tree';
+import { MonacoTreeElement } from './monaco-tree/monaco-tree.type';
+import { styled } from './styled';
 import { dracula } from './themes/dracula';
-import { MonacoTree } from './monaco-tree/MonacoTree';
 
 type Abas = 'html' | 'typescript' | 'scss';
 enum Carregado {
@@ -52,43 +53,34 @@ export function App() {
   }, [iframeRef, carregado]);
 
   useKeyboardShortcut(
-    (p) => p.ctrlKey && p.key == 's',
-    (p) => {
+    p => p.ctrlKey && p.key == 's',
+    p => {
       p.preventDefault();
-      const resposta = confirm(
-        'Salvar irá substituir a url acima, deseja continuar?'
-      );
+      const resposta = confirm('Salvar irá substituir a url acima, deseja continuar?');
       if (resposta) {
         acaoSalvar();
       }
     }
   );
 
-  function acaoTypescriptMount(
-    editor: monaco.editor.IStandaloneCodeEditor,
-    monaco: Monaco
-  ) {
+  function acaoTypescriptMount(editor: monaco.editor.IStandaloneCodeEditor, monaco: Monaco) {
     monaco.editor.defineTheme('dracula', dracula);
-    const model = monaco.editor.createModel(
-      typescript,
-      'typescript',
-      monaco.Uri.parse('file:///index.tsx')
-    );
+    const model = monaco.editor.createModel(typescript, 'typescript', monaco.Uri.parse('file:///index.tsx'));
     editor.setModel(model);
   }
   function acaoHtmlBeforeMount(monaco: Monaco) {
     monaco.editor.defineTheme('dracula', dracula);
     emmetHTML(monaco);
-    setCarregado((p) => p | Carregado.html);
+    setCarregado(p => p | Carregado.html);
   }
   function acaoScssBeforeMount(monaco: Monaco) {
     monaco.editor.defineTheme('dracula', dracula);
     emmetCSS(monaco);
-    setCarregado((p) => p | Carregado.scss);
+    setCarregado(p => p | Carregado.scss);
   }
   function acaoTypescriptBeforeMount(monaco: Monaco) {
     emmetReact(monaco);
-    setCarregado((p) => p | Carregado.typescript);
+    setCarregado(p => p | Carregado.typescript);
   }
   function acaoHtml(value?: string) {
     setHtml(value ?? '');
@@ -269,3 +261,39 @@ const PreviewItem = styled('iframe', {
   height: '100%',
   border: 'none',
 });
+
+function MonacoTree() {
+  const tree: MonacoTreeElement[] = [
+    {
+      name: 'src',
+      content: [
+        {
+          name: 'index.html',
+        },
+        {
+          name: 'index.tsx',
+        },
+        {
+          name: 'index.scss',
+        },
+      ],
+    },
+    {
+      name: 'assets',
+      content: [
+        {
+          name: 'logo.svg',
+        },
+        {
+          name: 'favicon.ico',
+        },
+      ],
+    },
+  ];
+  return (
+    <MonacoTreeBase
+      tree={tree}
+      theme="vs-dark"
+    />
+  );
+}
