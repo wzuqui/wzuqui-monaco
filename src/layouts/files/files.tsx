@@ -66,9 +66,10 @@ export function Files() {
       const filesIsLast = current_full_name === lastFile;
       const prevFile = filesOpen[filesOpen.findIndex(p => p.full_name === current_full_name) - 1];
       const nextFile = filesOpen[filesOpen.findIndex(p => p.full_name === current_full_name) + 1];
+      const fileIsOnly = filesOpen.length === 1;
 
-      let newActiveFile = {} as ITreeNode;
       if (fileIsActive) {
+        let newActiveFile = {} as ITreeNode;
         if (filesIsFirst) {
           if (nextFile) {
             newActiveFile = filesOpen[1];
@@ -82,10 +83,17 @@ export function Files() {
         if (!filesIsFirst && !filesIsLast) {
           newActiveFile = nextFile;
         }
+        dispatch(setSelectedNode(newActiveFile));
+        dispatch(removeFileOpen({ treeNode, newActiveFile: newActiveFile }));
+      } else {
+        if (fileIsOnly) {
+          let newActiveFile = {} as ITreeNode;
+          dispatch(setSelectedNode(newActiveFile));
+          dispatch(removeFileOpen({ treeNode, newActiveFile }));
+        } else {
+          dispatch(removeFileOpen({ treeNode, newActiveFile: fileActive }));
+        }
       }
-
-      dispatch(setSelectedNode(newActiveFile));
-      dispatch(removeFileOpen({ treeNode, newActiveFile }));
     }
   }
 
