@@ -1,5 +1,5 @@
 {
-  "name": "vite-react-typescript-starter",
+  "name": "wzuqui-monaco",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,10 +9,11 @@
     "dev": "vite",
     "predeploy": "npm run build",
     "preview": "vite preview",
-    "start": "npm run dev"
+    "start": "npm run dev --no-hmr"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.4.6",
+    "@reduxjs/toolkit": "^1.9.1",
     "@stitches/react": "^1.2.8",
     "emmet-monaco-es": "^5.1.2",
     "monaco-editor": "^0.34.1",
@@ -20,7 +21,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
-    "react-split": "^2.0.14"
+    "react-redux": "^8.0.5",
+    "react-split": "^2.0.14",
+    "redux": "^4.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",
