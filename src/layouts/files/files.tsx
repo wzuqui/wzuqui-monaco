@@ -62,51 +62,30 @@ export function Files() {
       const lastFile = filesOpen[filesOpen.length - 1].full_name;
 
       const fileIsActive = current_full_name == activeFile;
-      console.log('fileIsActive', fileIsActive);
-
       const filesIsFirst = current_full_name == firstFile;
-      console.log('filesIsFirst', filesIsFirst);
-
       const filesIsLast = current_full_name === lastFile;
-      console.log('filesIsLast', filesIsLast);
-
       const prevFile = filesOpen[filesOpen.findIndex(p => p.full_name === current_full_name) - 1];
-      console.log('prevFile', prevFile);
-
       const nextFile = filesOpen[filesOpen.findIndex(p => p.full_name === current_full_name) + 1];
-      console.log('nextFile', nextFile);
 
+      let newActiveFile = {} as ITreeNode;
       if (fileIsActive) {
-        let newActiveFile = {} as ITreeNode;
         if (filesIsFirst) {
-          // caso o arquivo seja o primeiro da lista
-          // e existe um próximo arquivo
           if (nextFile) {
-            // seleciona o próximo arquivo
             newActiveFile = filesOpen[1];
-            console.log('seleciona o próximo arquivo', newActiveFile);
           }
         }
         if (filesIsLast) {
-          // caso o arquivo seja o último da lista
-          // e existe um arquivo anterior
           if (prevFile) {
-            // seleciona o arquivo anterior
             newActiveFile = prevFile;
-            console.log('seleciona o arquivo anterior', newActiveFile);
           }
         }
         if (!filesIsFirst && !filesIsLast) {
-          // caso o arquivo não seja o primeiro nem o último da lista
-          // seleciona o próximo arquivo
           newActiveFile = nextFile;
-          console.log('seleciona o próximo arquivo', newActiveFile);
         }
-        dispatch(setSelectedNode(newActiveFile));
       }
-      console.warn('TODO: logica ainda nao está correta');
 
-      dispatch(removeFileOpen({ treeNode, newActiveFile: fileActive }));
+      dispatch(setSelectedNode(newActiveFile));
+      dispatch(removeFileOpen({ treeNode, newActiveFile }));
     }
   }
 
