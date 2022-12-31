@@ -9,7 +9,7 @@ export function BreadCrumbsView() {
 
   return (
     <Container className="bread-crumbs-view-container">
-      <BreadCrumbsBase treeNode={fileActive} />
+      {<BreadCrumbsBase treeNode={fileActive} />}
     </Container>
   );
 }

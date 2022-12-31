@@ -13,6 +13,7 @@ import { defineDraculaTheme } from '../../themes/defineDraculaTheme';
 import { loadLibs } from '../../utils/loadLibs';
 import { setCompilerOptions } from '../../utils/setCompilerOptions';
 import { transformDeepProperties } from '../../utils/transformDeepProperties';
+import { BreadCrumbsView } from '../bread-crumbs-view/bread-crumbs-view';
 import { Container } from './styles';
 
 interface HandleChangeParams {
@@ -46,11 +47,14 @@ export function EditorFileView() {
   }, [containerRef.current]);
 
   return (
-    <Container
-      className="editor-file-view-container"
-      ref={containerRef}
-      style={{ visibility: 'hidden' }}
-    ></Container>
+    <>
+      <BreadCrumbsView />
+      <Container
+        className="editor-file-view-container"
+        ref={containerRef}
+        style={{ visibility: 'hidden' }}
+      ></Container>
+    </>
   );
 }
 
