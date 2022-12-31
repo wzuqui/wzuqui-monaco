@@ -1,13 +1,11 @@
 import { Monaco } from '@monaco-editor/react';
 import { editor } from 'monaco-editor';
-import { useVsCodeSettings } from '../hooks/useVsCodeSettings';
 
 export function defineDraculaTheme(monaco: Monaco) {
-  monaco.editor.defineTheme('Dracula', theme);
-  monaco.editor.setTheme(useVsCodeSettings()['workbench.colorTheme']);
+  monaco.editor.defineTheme('Dracula', draculaTheme);
 }
 
-const theme = {
+const draculaTheme = {
   base: 'vs-dark',
   colors: {
     'editor.foreground': '#f8f8f2',

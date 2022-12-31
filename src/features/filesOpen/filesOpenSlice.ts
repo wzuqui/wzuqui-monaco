@@ -42,7 +42,10 @@ export const filesOpenSlice = createSlice({
       });
       state.active.content = action.payload;
     },
-    removeFileOpen: (state, action: PayloadAction<{ treeNode: ITreeNode; newActiveFile: ITreeNode }>) => {
+    removeFileOpen: (
+      state,
+      action: PayloadAction<{ treeNode: ITreeNode; newActiveFile: ITreeNode }>
+    ) => {
       action.type = 'removeFileOpen';
 
       const newActiveFile = action.payload.newActiveFile;

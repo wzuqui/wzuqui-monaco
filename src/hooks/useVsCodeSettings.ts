@@ -7,7 +7,8 @@ export function useVsCodeSettings() {
     const vsCodeSettingsJson = useRootSelector(selectVscodeSettingsJson);
     const vsCodeSettings: IVsCodeSettings = JSON.parse(vsCodeSettingsJson?.content ?? '{}');
     return vsCodeSettings;
-  } catch {
+  } catch (error) {
+    console.warn('useVsCodeSettings', error);
     return {} as IVsCodeSettings;
   }
 }

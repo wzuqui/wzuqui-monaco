@@ -1,7 +1,9 @@
 import { addFileOpen } from '../../features/filesOpen/filesOpenSlice';
-import { setSelectedNode } from '../../features/workspace/workspaceSlice';
+import { addNode, setSelectedNode } from '../../features/workspace/workspaceSlice';
 import { useRootDispatch } from '../../hooks/useRootDispatch';
 import { ITreeNode } from '../../interfaces/tree-node';
+import { getIcon } from '../../utils/getIcon';
+import { IContextMenuItem } from '../context-menu/context-menu';
 import { ChevronIcon, Container, TreeNodeItem, TreeNodeItemContent } from './styles';
 
 interface ITreeNodeProps {
@@ -19,6 +21,48 @@ export function TreeNode({ deep = 0, treeNode, ...props }: ITreeNodeProps) {
     dispatch(setSelectedNode(treeNode));
   }
 
+  function onContextMenuItem(item: IContextMenuItem) {
+    if (item.action === 'new-file') {
+      const response = prompt('Enter file name');
+      if (!response) return;
+      const name = response;
+      const icon = getIcon(false, name, false);
+      const newFile: ITreeNode = {
+        content: '',
+        full_name: treeNode.full_name + '/' + name,
+        icon: icon,
+        isFile: true,
+        isFileActive: false,
+        isFileOpen: false,
+        isFolder: false,
+        isFolderOpen: false,
+        isSelected: false,
+        name: name,
+      };
+      dispatch(addNode({ parent: treeNode, node: newFile }));
+    }
+    if (item.action === 'new-folder') {
+      const response = prompt('Enter folder name');
+      if (!response) return;
+      const name = response;
+      const icon = getIcon(true, name, false);
+      const newFolder: ITreeNode = {
+        content: '',
+        full_name: treeNode.full_name + '/' + name,
+        icon: icon,
+        isFile: false,
+        isFileActive: false,
+        isFileOpen: false,
+        isFolder: true,
+        isFolderOpen: false,
+        isSelected: false,
+        name: name,
+        items: [],
+      };
+      dispatch(addNode({ parent: treeNode, node: newFolder }));
+    }
+  }
+
   return (
     <Container
       {...props}
@@ -27,6 +71,7 @@ export function TreeNode({ deep = 0, treeNode, ...props }: ITreeNodeProps) {
       <TreeNodeItem
         className="tree-node-item"
         onClick={handleClick}
+        onContextMenuItem={onContextMenuItem}
         selected={treeNode.isSelected}
         style={{ paddingLeft: deep + 'rem' }}
       >

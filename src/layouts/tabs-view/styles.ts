@@ -1,13 +1,9 @@
 import { styled } from '../../styled';
 
 export const Container = styled('div', {
-  display: 'flex',
-  height: '100vw',
-  flexDirection: 'column',
-});
-
-export const EditorContainer = styled('div', {
-  height: '100%',
+  flexShrink: 0,
+  overflowX: 'auto',
+  overflowY: 'hidden',
 });
 
 export const Tab = styled('div', {
@@ -38,18 +34,4 @@ export const Tabs = styled('div', {
   flexShrink: 0,
   fontFamily: '$apple',
   fontSize: 'small',
-});
-
-export const TabsContainer = styled('div', {
-  flexShrink: 0,
-  overflowX: 'auto',
-  overflowY: 'hidden',
-});
-
-export const Header = styled('div', {
-  flexShrink: 0,
-});
-
-export const BreadCrumbsContainer = styled('div', {
-  backgroundColor: '$tab-active-background',
 });

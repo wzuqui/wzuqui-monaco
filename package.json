@@ -9,7 +9,7 @@
     "dev": "vite",
     "predeploy": "npm run build",
     "preview": "vite preview",
-    "start": "npm run dev --no-hmr"
+    "start": "npm run dev"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.4.6",

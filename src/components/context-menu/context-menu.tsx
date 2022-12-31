@@ -3,6 +3,19 @@ import { HTMLAttributes, PropsWithChildren, useEffect, useRef, useState } from '
 import { Container, ContextMenuContainer, Item, Items } from './styles';
 
 export interface IContextMenuItem {
+  action:
+    | 'new-file'
+    | 'new-folder'
+    | 'separator'
+    | 'cut'
+    | 'copy'
+    | 'paste'
+    | 'separator'
+    | 'copy-path'
+    | 'copy-relative-path'
+    | 'separator'
+    | 'rename'
+    | 'delete';
   key: string;
   name?: string;
   type?: 'separator';
@@ -11,21 +24,24 @@ export interface IContextMenuItem {
 }
 
 interface ContextMenuProps extends PropsWithChildren<HTMLAttributes<HTMLElement>> {
-  onClickItem?: (item: IContextMenuItem) => void;
+  onContextMenuItem?: (item: IContextMenuItem) => void;
 }
 
-export function ContextMenu({ children, ...props }: ContextMenuProps) {
+export function ContextMenu({ children, onContextMenuItem, ...props }: ContextMenuProps) {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
-  function handleClick(event: React.MouseEvent<HTMLLIElement, MouseEvent>, item: IContextMenuItem) {
+  function handleClick(
+    event: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    item: IContextMenuItem
+  ) {
     event.stopPropagation();
     if (item.disabled) return;
     if (item.type === 'separator') return;
 
     setShowMenu(p => false);
-    props.onClickItem && props.onClickItem(item);
+    onContextMenuItem && onContextMenuItem(item);
   }
 
   function handleContextMenu(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -52,57 +68,69 @@ export function ContextMenu({ children, ...props }: ContextMenuProps) {
 
   const items: IContextMenuItem[] = [
     {
+      action: 'new-file',
       key: 'new-file',
       name: 'New File...',
     },
     {
+      action: 'new-folder',
       key: 'new-folder',
       name: 'New Folder...',
     },
     {
+      action: 'separator',
       key: 'separator-1',
       type: 'separator',
     },
     {
+      action: 'cut',
       key: 'cut',
       name: 'Cut',
       shortcut: 'Ctrl+X',
     },
     {
+      action: 'copy',
       key: 'copy',
       name: 'Copy',
       shortcut: 'Ctrl+C',
     },
     {
+      action: 'paste',
       key: 'paste',
       name: 'Paste',
       shortcut: 'Ctrl+V',
       disabled: true,
     },
     {
+      action: 'separator',
       key: 'separator-2',
       type: 'separator',
     },
     {
+      action: 'copy-path',
       key: 'copy-path',
       name: 'Copy Path',
       shortcut: 'Shift+Alt+C',
     },
     {
+      action: 'copy-relative-path',
       key: 'copy-relative-path',
       name: 'Copy Relative Path',
       shortcut: 'CTRL+K Ctrl+Shift+C',
     },
     {
+      action: 'separator',
       key: 'separator-3',
       type: 'separator',
     },
     {
+      action: 'rename',
       key: 'rename',
       name: 'Rename...',
       shortcut: 'F2',
     },
     {
+      action: 'delete',
       key: 'delete',
       name: 'Delete',
       shortcut: 'Delete',

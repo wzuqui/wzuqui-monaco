@@ -3,12 +3,11 @@ import { selectWorkspace } from '../../features/workspace/workspaceSlice';
 import { useRootSelector } from '../../hooks/useRootSelector';
 import { Container } from './styles';
 
-export interface IExplorerProps {}
-
-export function Explorer(props: IExplorerProps) {
+export function ExplorerView() {
   const workspace = useRootSelector(selectWorkspace);
+
   return (
-    <Container className="explorer">
+    <Container className="explorer-view">
       {workspace.treeNode.items!.map((p, index) => (
         <TreeNode
           key={index}

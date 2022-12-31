@@ -1,20 +1,8 @@
-import { useMonaco } from '@monaco-editor/react';
-import { useEffect } from 'react';
-
-import { Explorer } from '../layouts/explorer/explorer';
-import { Files } from '../layouts/files/files';
-import { defineDraculaTheme } from '../themes/defineDraculaTheme';
+import { EditorView } from '../layouts/editor-view/editor-view';
+import { ExplorerView } from '../layouts/explorer-view/explorer-view';
 import { Container, Splitter } from './styles';
 
 export function App() {
-  const monaco = useMonaco();
-
-  useEffect(() => {
-    if (monaco) {
-      defineDraculaTheme(monaco);
-    }
-  }, [monaco]);
-
   return (
     <Container className="container">
       <Splitter
@@ -22,8 +10,8 @@ export function App() {
         minSize={190}
         sizes={[20, 80]}
       >
-        <Explorer />
-        <Files />
+        <ExplorerView />
+        <EditorView />
       </Splitter>
     </Container>
   );
