@@ -1,0 +1,21 @@
+{
+  "recommendations": [
+    "alfnielsen.vsc-organize-imports",
+    "dbaeumer.vscode-eslint",
+    "dracula-theme.theme-dracula",
+    "eamodio.gitlens",
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "github.copilot",
+    "infinity1207.angular2-switcher",
+    "johnpapa.winteriscoming",
+    "mhutchie.git-graph",
+    "naumovs.color-highlight",
+    "pkief.material-icon-theme",
+    "raidou.calc",
+    "streetsidesoftware.code-spell-checker",
+    "streetsidesoftware.code-spell-checker-portuguese-brazilian",
+    "tyriar.sort-lines",
+    "vivaxy.vscode-conventional-commits"
+  ]
+}
