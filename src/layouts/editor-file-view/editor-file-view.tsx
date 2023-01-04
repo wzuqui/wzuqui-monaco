@@ -6,6 +6,8 @@ import {
   defaultTsConfigJsonFullName,
   defaultVscodeSettingsJsonFullName,
 } from '../../features/workspace/initialState';
+import { setTreeNodeContent } from '../../features/workspace/workspaceSlice';
+import { useRootDispatch } from '../../hooks/useRootDispatch';
 import { useVsCodeSettings } from '../../hooks/useVsCodeSettings';
 import { ITreeNode } from '../../interfaces/tree-node';
 import { startRootListening } from '../../store';
@@ -27,6 +29,11 @@ export function EditorFileView() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [editor, setEditor] = useState<monaco.editor.IStandaloneCodeEditor | null>(null);
   const vsCodeSettings = transformDeepProperties(useVsCodeSettings());
+  const dispatch = useRootDispatch();
+
+  function handleChange(treeNode: ITreeNode, value: string) {
+    dispatch(setTreeNodeContent({ treeNode, value }));
+  }
 
   useEffect(() => {
     if (containerRef && !editor) {
@@ -39,7 +46,7 @@ export function EditorFileView() {
         theme,
         ...options,
       });
-      handleMount(containerRef.current!, editor, monaco);
+      handleMount(containerRef.current!, editor, monaco, handleChange);
       setEditor(editor);
     }
 
@@ -100,7 +107,8 @@ function currentActiveIsUndefined(
 function handleMount(
   containerElement: HTMLDivElement,
   editor: monaco.editor.IStandaloneCodeEditor,
-  monaco: Monaco
+  monaco: Monaco,
+  onChange: (treeNode: ITreeNode, content: string) => void
 ) {
   let observableChange: monaco.IDisposable | undefined;
   let active: ITreeNode;
@@ -145,6 +153,7 @@ function handleMount(
             event,
             value: model.getValue(),
           });
+          onChange(active, model.getValue());
         });
       }
       function setModel() {

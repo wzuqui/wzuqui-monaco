@@ -13,11 +13,13 @@ export const { styled, globalCss: globalCssBase } = createStitches({
       'context-menu-item-separator': '#606060',
       'tab-active-background': '#282A36',
       'tab-active-border': '#94517E',
+      'tabs-background': '#191a21',
       'tree-node-selected': '#44475A',
       'tree-node-selected-border': '$secondary',
     },
     fonts: {
-      apple: '-apple-system,BlinkMacSystemFont,Segoe WPC,Segoe UI,HelveticaNeue-dark,Ubuntu,Droid Sans,sans-serif',
+      apple:
+        '-apple-system,BlinkMacSystemFont,Segoe WPC,Segoe UI,HelveticaNeue-dark,Ubuntu,Droid Sans,sans-serif',
       normal: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     },
     shadows: {

@@ -1,6 +1,7 @@
 import { styled } from '../../styled';
 
 export const Container = styled('div', {
+  backgroundColor: '$tabs-background',
   flexShrink: 0,
   overflowX: 'auto',
   overflowY: 'hidden',

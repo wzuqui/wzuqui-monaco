@@ -7,6 +7,7 @@ import {
   defaultRoot,
   defaultVscodeSettingsJsonFullName,
   initialState,
+  InitialState,
 } from './initialState';
 
 export const workspaceSlice = createSlice({
@@ -28,20 +29,22 @@ export const workspaceSlice = createSlice({
       const full_name = action.payload.full_name ?? defaultRoot;
       helpers.setSelectedNodeRecursive(state.treeNode, full_name);
     },
-    setTreeNodeContent: (
-      state,
-      action: PayloadAction<{ treeNode: ITreeNode; value: string }>
-    ) => {
-      action.type = 'setTreeNodeContent';
-
-      helpers.setTreeNodeContentRecursive(
-        state.treeNode,
-        action.payload.treeNode.full_name,
-        action.payload.value
-      );
-    },
+    setTreeNodeContent: setTreeNodeContentFunction,
   },
 });
+
+export function setTreeNodeContentFunction(
+  state: InitialState,
+  action: PayloadAction<{ treeNode: ITreeNode; value: string }>
+) {
+  action.type = 'setTreeNodeContent';
+
+  helpers.setTreeNodeContentRecursive(
+    state.treeNode,
+    action.payload.treeNode.full_name,
+    action.payload.value
+  );
+}
 
 export const { addNode, setSelectedNode, setTreeNodeContent } = workspaceSlice.actions;
 export const selectWorkspace = (state: RootState) => state.workspace;

@@ -1,4 +1,5 @@
 import { ITreeNode } from '../../interfaces/tree-node';
+import { getFullNameWithoutExtension } from '../../utils/getMimeType';
 import { orderBy } from '../../utils/orderBy';
 
 export const helpers = {
@@ -23,6 +24,25 @@ export const helpers = {
           return item;
         }
         const found = helpers.findNodeRecursive(item, full_name);
+        if (found) {
+          return found;
+        }
+      }
+    }
+  },
+  findNodeRecursiveWithoutExtension(
+    node: ITreeNode,
+    full_name: string
+  ): ITreeNode | undefined {
+    if (node.items) {
+      for (const item of node.items) {
+        if (
+          getFullNameWithoutExtension(item.full_name).toLowerCase() ===
+          getFullNameWithoutExtension(full_name).toLowerCase()
+        ) {
+          return item;
+        }
+        const found = helpers.findNodeRecursiveWithoutExtension(item, full_name);
         if (found) {
           return found;
         }

@@ -13,12 +13,12 @@ const defaultIndexHtml = `
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 </head>
 
 <body>
+  <h1>defaultIndexHtml</h1>
   <div id="root"></div>
+  <script type="module" src="./src/main.tsx"></script>
 </body>
 
 </html>`.trim();
@@ -74,13 +74,13 @@ export const defaultTsConfigJson = `
 `.trim();
 
 const defaultSrcMainTsx = `
-import ReactDOM from 'react-dom/client';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 
-import { App } from './App';
+import { App } from './app';
 
-import './styles.scss';
-
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(<App />);
+// main.ts
+createRoot(document.getElementById('root') as HTMLDivElement).render(<App />);
 `.trim();
 
 const defaultSrcStylesScss = `
@@ -104,19 +104,25 @@ export function Button(props: React.PropsWithChildren<{}> & React.ButtonHTMLAttr
 `.trim();
 
 export const defaultSrcAppTsx = `
-import React, { useState } from "react";
-
-import { Button } from "./components/Button";
+import React from 'react';
+import { useState } from 'react';
 
 export function App() {
-  const [ counter, setCounter ] = useState(1);
+  const [ contador, setContador ] = useState(1);
 
   function handleClick() {
-    setCounter(counter + 1);
+    setContador(contador + 1);
   }
 
   return (
-    <Button onClick={() => handleClick()}>{counter} + 1</Button>
+    <Button onClick={() => handleClick()}>{contador} + 1</Button>
+  );
+}
+
+function Button(props: React.PropsWithChildren<{}> & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button {...props}>
+    </button>
   );
 }
 `.trim();
